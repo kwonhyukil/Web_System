@@ -1,0 +1,33 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 50px;
+}
+.container {
+  display: inline-block;
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+.login-button {
+  background-color: #007bff; /* 파란색 배경 */
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.login-button:hover {
+  background-color: #0056b3;
+}
+.message {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #333;
+}

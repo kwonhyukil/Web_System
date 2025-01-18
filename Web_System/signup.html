@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>회원가입</h2>
+      <form action="/submit_signup" method="POST">
+        <div style="margin-bottom: 15px">
+          <label for="name">이름</label><br />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            style="
+              width: 93%;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+            "
+          />
+        </div>
+        <div style="margin-bottom: 15px">
+          <label for="student-id">학번</label><br />
+          <input
+            type="text"
+            id="student-id"
+            name="student_id"
+            required
+            style="
+              width: 93%;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+            "
+          />
+        </div>
+        <div style="margin-bottom: 15px">
+          <label for="phone">전화번호</label><br />
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            required
+            style="
+              width: 93%;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+            "
+          />
+        </div>
+        <div style="margin-bottom: 15px">
+          <label for="password">비밀번호</label><br />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            style="
+              width: 93%;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+            "
+          />
+        </div>
+        <button class="login-button" type="submit">회원가입</button>
+        <button class="login-button" onclick="location.href='index.html'">
+          뒤로가기
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

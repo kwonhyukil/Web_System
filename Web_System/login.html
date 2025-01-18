@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>로그인</h2>
+      <form action="submit_login.html" method="POST">
+        <div style="margin-bottom: 15px">
+          <label for="username">학번</label><br />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            style="
+              width: 93%;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+            "
+          />
+        </div>
+        <div style="margin-bottom: 15px">
+          <label for="password">비밀번호</label><br />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            style="
+              width: 93%;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+            "
+          />
+        </div>
+        <button class="login-button" type="submit">로그인</button>
+      </form>
+      <button class="login-button" onclick="location.href='index.html'">
+        돌아가기
+      </button>
+    </div>
+  </body>
+</html>
