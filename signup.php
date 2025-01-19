@@ -1,9 +1,9 @@
 <?php
 // 데이터베이스 연결 설정
 $host = 'localhost'; // 데이터베이스 호스트 (보통 localhost)
-$db = 'your_database_name'; // 데이터베이스 이름
-$user = 'your_username'; // 데이터베이스 사용자 이름
-$pass = 'your_password'; // 데이터베이스 비밀번호
+$db = 'il.database'; // 데이터베이스 이름
+$user = 'ike'; // 데이터베이스 사용자 이름
+$pass = 'gsc1234!@#$'; // 데이터베이스 비밀번호
 $charset = 'utf8mb4'; // 문자 인코딩 설정
 
 // PDO 데이터 소스 이름(DSN)과 연결 옵션 설정
