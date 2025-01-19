@@ -21,38 +21,40 @@ try {
     die("데이터베이스 연결 실패: " . $e->getMessage());
 }
 
-// 로그인 처리
+// POST 요청으로 전달된 학번과 비밀번호 받기
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $student_id = htmlspecialchars(trim($_POST['student_id']));
     $password = htmlspecialchars(trim($_POST['password']));
 
+    // 입력값 검증
     if (empty($student_id) || empty($password)) {
-        die("학번과 비밀번호를 입력해주세요.");
+        echo "<script>alert('학번과 비밀번호를 입력해주세요.'); history.back();</script>";
+        exit();
     }
 
-    // 데이터베이스에서 사용자 조회
+    // 데이터베이스에서 사용자 정보 조회
     $sql = "SELECT * FROM REQUEST_METHOD WHERE student_id = :student_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':student_id' => $student_id]);
     $user = $stmt->fetch();
 
-    if ($user) {
-        if (password_verify($password, $user['password'])) {
-            // 로그인 성공 -> 세션 저장
-            $_SESSION['loggedin'] = true;
-            $_SESSION['user_name'] = $user['name'];
-            $_SESSION['user_role'] = $user['role'];
+    // 사용자 정보 검증
+    if ($user && password_verify($password, $user['password'])) {
+        // 세션에 사용자 정보 저장
+        $_SESSION['loggedin'] = true;
+        $_SESSION['user_name'] = $user['name'];
+        $_SESSION['user_role'] = $user['role'];
 
-            // 공지사항 및 시간표 페이지로 이동
-            header("Location: notice_schedule.html");
-            exit();
-        } else {
-            echo "<script>alert('잘못된 비밀번호입니다.'); history.back();</script>";
-        }
+        // notice_schedule.php로 리다이렉션
+        header("Location: notice_schedule.php");
+        exit();
     } else {
-        echo "<script>alert('학번이 존재하지 않습니다.'); history.back();</script>";
+        // 로그인 실패 시 경고 메시지
+        echo "<script>alert('학번 또는 비밀번호가 일치하지 않습니다.'); history.back();</script>";
+        exit();
     }
 } else {
     echo "잘못된 요청 방식입니다.";
+    exit();
 }
 ?>
