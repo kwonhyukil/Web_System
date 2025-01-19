@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_role'] = $user['role'];
 
         // notice_schedule.php로 리다이렉션
-        header("Location: notice_schedule.php");
+        header("Location: source/notice_schedule.php");
         exit();
     } else {
         // 로그인 실패 시 경고 메시지
