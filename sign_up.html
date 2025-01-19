@@ -16,31 +16,22 @@
         margin: 0;
       }
 
-      /* 컨테이너 스타일 */
       .container {
         background: white;
-        padding: 20px 30px;
-        border-radius: 8px;
+        padding: 30px;
+        border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 350px;
+        width: 400px;
         text-align: center;
       }
 
-      /* 로고 스타일 */
       .logo img {
         width: 100px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
       }
 
       .logo h2 {
-        margin: 0;
         font-size: 20px;
-        color: #333;
-      }
-
-      /* 제목 스타일 */
-      h1 {
-        font-size: 24px;
         color: #333;
         margin-bottom: 20px;
       }
@@ -58,7 +49,8 @@
         color: #555;
       }
 
-      .input-group input {
+      .input-group input,
+      .input-group select {
         width: 100%;
         padding: 10px;
         border: 1px solid #ddd;
@@ -68,18 +60,13 @@
       }
 
       /* 버튼 스타일 */
-      .button-group {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-      }
-
-      button {
-        width: 48%;
+      .button {
+        margin-top: 15px;
         padding: 10px 15px;
+        width: 100%;
         border: none;
         border-radius: 5px;
-        font-size: 14px;
+        font-size: 16px;
         cursor: pointer;
       }
 
@@ -104,7 +91,7 @@
   </head>
   <body>
     <div class="container">
-      <!-- 로고 및 제목 -->
+      <!-- 로고 -->
       <div class="logo">
         <img src="image/yeungjin_logo.jfif" alt="Yeungjin University Logo" />
         <h2>영진전문대학교</h2>
@@ -113,7 +100,6 @@
       <!-- 회원가입 폼 -->
       <h1>회원가입</h1>
       <form action="process_signup.php" method="POST">
-        <!-- 이름 입력 필드 -->
         <div class="input-group">
           <label for="name">이름</label>
           <input
@@ -124,8 +110,6 @@
             required
           />
         </div>
-
-        <!-- 학번 입력 필드 -->
         <div class="input-group">
           <label for="student_id">학번</label>
           <input
@@ -136,8 +120,6 @@
             required
           />
         </div>
-
-        <!-- 전화번호 입력 필드 -->
         <div class="input-group">
           <label for="phone">전화번호</label>
           <input
@@ -148,8 +130,6 @@
             required
           />
         </div>
-
-        <!-- 비밀번호 입력 필드 -->
         <div class="input-group">
           <label for="password">비밀번호</label>
           <input
@@ -160,14 +140,22 @@
             required
           />
         </div>
-
-        <!-- 버튼 그룹 -->
-        <div class="button-group">
-          <button type="submit" class="signup-button">회원가입</button>
-          <button type="button" class="back-button" onclick="history.back()">
-            뒤로가기
-          </button>
+        <div class="input-group">
+          <label for="role">권한</label>
+          <select id="role" name="role" required>
+            <option value="student">학생</option>
+            <option value="professor">교수</option>
+            <option value="admin">관리자</option>
+          </select>
         </div>
+        <button type="submit" class="button signup-button">회원가입</button>
+        <button
+          type="button"
+          class="button back-button"
+          onclick="location.href='index.html'"
+        >
+          뒤로가기
+        </button>
       </form>
     </div>
   </body>
