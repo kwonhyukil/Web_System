@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // 사용자 정보를 데이터베이스에 삽입하는 SQL 쿼리
-    $sql = "INSERT INTO users (name, student_id, phone, password, role, admin_code) 
+    $sql = "INSERT INTO REQUEST_METHOD (name, student_id, phone, password, role, admin_code) 
             VALUES (:name, :student_id, :phone, :password, :role, :admin_code)";
     $stmt = $pdo->prepare($sql); // SQL 준비 (프리페어드 스테이트먼트)
 
