@@ -15,9 +15,9 @@
 
       <form class="login-form">
         <div class="input-group">
-          <label for="username">
+          <label for="g">
             <i class="icon">&#128100;</i>
-            <input type="text" id="username" placeholder="Username" required />
+            <input type="text" id="학번" placeholder="학번" required />
           </label>
         </div>
         <div class="input-group">
@@ -25,25 +25,18 @@
             <i class="icon">&#128274;</i>
             <input
               type="password"
-              id="password"
-              placeholder="Password"
+              id="비밀번호"
+              placeholder="비밀번호"
               required
             />
           </label>
         </div>
         <button type="submit" class="login-button">LOGIN</button>
         <div class="extra-options">
-          <label><input type="checkbox" /> Remember me</label>
-          <a href="#" class="forgot-password">Forgot Password?</a>
+          <label><input type="checkbox" /> 로그인 상태 유지</label>
+          <a href="#" class="forgot-password">비밀번호 찾기</a>
         </div>
       </form>
-      <button
-        onclick="location.href='signup.html'"
-        class="login-button"
-        style="margin-top: 20px"
-      >
-        Sign Up
-      </button>
     </div>
   </body>
 </html>

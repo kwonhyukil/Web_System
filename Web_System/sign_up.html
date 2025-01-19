@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>로그인</title>
+    <title>회원가입</title>
     <style>
       /* 전체 페이지 스타일 */
       body {
@@ -16,22 +16,31 @@
         margin: 0;
       }
 
+      /* 컨테이너 스타일 */
       .container {
         background: white;
-        padding: 30px;
-        border-radius: 10px;
+        padding: 20px 30px;
+        border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 400px;
+        width: 350px;
         text-align: center;
       }
 
+      /* 로고 스타일 */
       .logo img {
         width: 100px;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
       }
 
       .logo h2 {
+        margin: 0;
         font-size: 20px;
+        color: #333;
+      }
+
+      /* 제목 스타일 */
+      h1 {
+        font-size: 24px;
         color: #333;
         margin-bottom: 20px;
       }
@@ -59,63 +68,63 @@
       }
 
       /* 버튼 스타일 */
-      .button {
-        margin-top: 15px;
+      .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      button {
+        width: 48%;
         padding: 10px 15px;
-        width: 100%;
         border: none;
         border-radius: 5px;
-        font-size: 16px;
+        font-size: 14px;
         cursor: pointer;
       }
 
-      .login-button {
+      .signup-button {
         background-color: #007bff;
         color: white;
       }
 
-      .login-button:hover {
+      .signup-button:hover {
         background-color: #0056b3;
       }
 
-      .signup-button {
-        background-color: #28a745;
+      .back-button {
+        background-color: #6c757d;
         color: white;
       }
 
-      .signup-button:hover {
-        background-color: #218838;
-      }
-
-      /* 로그인 상태 유지, 비밀번호 찾기 스타일 */
-      .extra-options {
-        display: flex;
-        justify-content: space-between;
-        font-size: 13px;
-        margin-top: 15px;
-        color: #555;
-      }
-
-      .extra-options a {
-        color: #007bff;
-        text-decoration: none;
-      }
-
-      .extra-options a:hover {
-        text-decoration: underline;
+      .back-button:hover {
+        background-color: #5a6268;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <!-- 로고 -->
+      <!-- 로고 및 제목 -->
       <div class="logo">
         <img src="image/yeungjin_logo.jfif" alt="Yeungjin University Logo" />
         <h2>영진전문대학교</h2>
       </div>
 
-      <!-- 로그인 폼 -->
-      <form action="process_login.php" method="POST">
+      <!-- 회원가입 폼 -->
+      <h1>회원가입</h1>
+      <form action="process_signup.php" method="POST">
+        <!-- 이름 입력 필드 -->
+        <div class="input-group">
+          <label for="name">이름</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="이름"
+            required
+          />
+        </div>
+
         <!-- 학번 입력 필드 -->
         <div class="input-group">
           <label for="student_id">학번</label>
@@ -124,6 +133,18 @@
             id="student_id"
             name="student_id"
             placeholder="학번"
+            required
+          />
+        </div>
+
+        <!-- 전화번호 입력 필드 -->
+        <div class="input-group">
+          <label for="phone">전화번호</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="전화번호"
             required
           />
         </div>
@@ -140,24 +161,14 @@
           />
         </div>
 
-        <!-- 로그인 버튼 -->
-        <button type="submit" class="button login-button">로그인</button>
-
-        <!-- 회원가입 버튼 -->
-        <button
-          type="button"
-          class="button signup-button"
-          onclick="location.href='signup.php'"
-        >
-          회원가입
-        </button>
+        <!-- 버튼 그룹 -->
+        <div class="button-group">
+          <button type="submit" class="signup-button">회원가입</button>
+          <button type="button" class="back-button" onclick="history.back()">
+            뒤로가기
+          </button>
+        </div>
       </form>
-
-      <!-- 로그인 상태 유지 및 비밀번호 찾기 -->
-      <div class="extra-options">
-        <label> <input type="checkbox" /> 로그인 상태 유지 </label>
-        <a href="#">비밀번호 찾기</a>
-      </div>
     </div>
   </body>
 </html>
