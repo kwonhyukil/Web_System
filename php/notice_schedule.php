@@ -3,7 +3,7 @@ session_start();
 
 // 로그인 상태 확인
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: index.html");
+    header("Location: ../index.html");
     exit();
 }
 ?>
