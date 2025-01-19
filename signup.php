@@ -61,12 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':admin_code' => $admin_code
         ]);
 
-        // 회원가입 성공 메시지 출력
-        echo "회원가입이 완료되었습니다.<br>";
-        if ($admin_code) {
-            // 관리자일 경우 생성된 관리자 코드 출력
-            echo "생성된 관리자 코드: $admin_code";
-        }
+        // 회원가입 완료 후 완료 페이지로 리다이렉션
+        header("Location: signup_submit.html"); // signup_submit.html 페이지로 이동
+        exit(); // 스크립트 종료
     } catch (PDOException $e) {
         // SQL 실행 중 오류 발생 시 에러 메시지 출력 후 종료
         die("회원가입 중 오류 발생: " . $e->getMessage());
