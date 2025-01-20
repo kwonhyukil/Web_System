@@ -26,12 +26,45 @@ try {
     die("데이터베이스 연결 실패: " . $e->getMessage());
 }
 
-// 데이터 조회
-$sql = "SELECT * FROM NOTICES ORDER BY date DESC";
-$stmt = $pdo->query($sql);
-$notices = $stmt->fetchAll();
-?>
+// 페이지네이션 변수
+$itemsPerPage = 5; // 한 페이지에 표시할 항목 수
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = max($page, 1); // 페이지는 1 이상이어야 함
+$offset = ($page - 1) * $itemsPerPage;
 
+// 학년 필터 처리
+$gradeFilter = isset($_GET['grade']) ? $_GET['grade'] : 'all';
+
+// 데이터 조회 쿼리
+if ($gradeFilter === 'all') {
+    $sqlCount = "SELECT COUNT(*) FROM NOTICES";
+    $sql = "SELECT * FROM NOTICES ORDER BY date DESC LIMIT :offset, :itemsPerPage";
+} else {
+    $sqlCount = "SELECT COUNT(*) FROM NOTICES WHERE target = :grade";
+    $sql = "SELECT * FROM NOTICES WHERE target = :grade ORDER BY date DESC LIMIT :offset, :itemsPerPage";
+}
+
+// 총 공지사항 수 계산
+$stmt = $pdo->prepare($sqlCount);
+if ($gradeFilter !== 'all') {
+    $stmt->bindValue(':grade', $gradeFilter, PDO::PARAM_STR);
+}
+$stmt->execute();
+$totalItems = $stmt->fetchColumn();
+
+// 공지사항 가져오기
+$stmt = $pdo->prepare($sql);
+if ($gradeFilter !== 'all') {
+    $stmt->bindValue(':grade', $gradeFilter, PDO::PARAM_STR);
+}
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->bindValue(':itemsPerPage', $itemsPerPage, PDO::PARAM_INT);
+$stmt->execute();
+$notices = $stmt->fetchAll();
+
+// 총 페이지 수 계산
+$totalPages = ceil($totalItems / $itemsPerPage);
+?>
 <!DOCTYPE html>
 <html lang="ko">
   <head>
@@ -44,10 +77,24 @@ $notices = $stmt->fetchAll();
     <div class="container">
       <div class="header">
         공지사항
-        <button class="write-button" onclick="location.href='write_notice.php'">
+        <button class="write-button" onclick="location.href='../html/write_notice.html'">
           작성하기
         </button>
       </div>
+
+      <!-- 학년 필터 -->
+      <div class="dropdown">
+        <form method="GET" action="notice.php">
+          <select name="grade" onchange="this.form.submit()">
+            <option value="all" <?php if ($gradeFilter === 'all') echo 'selected'; ?>>전체</option>
+            <option value="1" <?php if ($gradeFilter === '1') echo 'selected'; ?>>1학년</option>
+            <option value="2" <?php if ($gradeFilter === '2') echo 'selected'; ?>>2학년</option>
+            <option value="3" <?php if ($gradeFilter === '3') echo 'selected'; ?>>3학년</option>
+          </select>
+        </form>
+      </div>
+
+      <!-- 공지사항 테이블 -->
       <table>
         <thead>
           <tr>
@@ -58,9 +105,11 @@ $notices = $stmt->fetchAll();
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($notices as $notice): ?>
+          <?php 
+          $itemNumber = $offset + 1; // 번호를 1부터 시작
+          foreach ($notices as $notice): ?>
             <tr>
-              <td><?php echo htmlspecialchars($notice['id']); ?></td>
+              <td><?php echo $itemNumber++; ?></td>
               <td><?php echo htmlspecialchars($notice['title']); ?></td>
               <td><?php echo htmlspecialchars($notice['author']); ?></td>
               <td><?php echo htmlspecialchars($notice['date']); ?></td>
@@ -68,6 +117,24 @@ $notices = $stmt->fetchAll();
           <?php endforeach; ?>
         </tbody>
       </table>
+
+      <!-- 페이지네이션 -->
+      <div class="pagination">
+        <?php if ($page > 1): ?>
+          <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $page - 1; ?>">이전</a>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+          <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $i; ?>" 
+            <?php if ($i === $page) echo 'style="font-weight: bold; text-decoration: underline;"'; ?>>
+            <?php echo $i; ?>
+          </a>
+        <?php endfor; ?>
+
+        <?php if ($page < $totalPages): ?>
+          <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $page + 1; ?>">다음</a>
+        <?php endif; ?>
+      </div>
     </div>
   </body>
 </html>
