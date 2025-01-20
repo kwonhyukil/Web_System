@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // 사용자 인증
-    $sql = "SELECT * FROM users WHERE student_id = :student_id";
+    $sql = "SELECT * FROM REQUEST_METHOD WHERE student_id = :student_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':student_id' => $student_id]);
     $user = $stmt->fetch();
