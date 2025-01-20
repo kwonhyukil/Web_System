@@ -83,6 +83,21 @@ table th {
   font-weight: bold;
 }
 
+/* 뒤로가기 버튼 스타일 */
+.back-button {
+  background-color: #ffc107;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background-color: #e0a800;
+}
+
 /* 페이지네이션 */
 .pagination {
   text-align: center;
@@ -121,5 +136,10 @@ table th {
     display: block;
     margin: 10px auto 0;
     text-align: center;
+  }
+
+  .back-button {
+    width: 100%;
+    margin-top: 10px;
   }
 }

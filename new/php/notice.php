@@ -101,6 +101,7 @@ $totalPages = ceil($totalItems / $itemsPerPage);
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
+            <th>뒤로가기</th>
         </tr>
         </thead>
         <tbody>
@@ -113,6 +114,7 @@ $totalPages = ceil($totalItems / $itemsPerPage);
                 <td><?php echo htmlspecialchars($notice['title']); ?></td>
                 <td><?php echo htmlspecialchars($notice['author']); ?></td>
                 <td><?php echo htmlspecialchars($notice['date']); ?></td>
+                <td><button class="back-button" onclick="location.href='notice_schedule.php'">뒤로가기</button></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
