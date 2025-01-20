@@ -6,6 +6,50 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: ../index.html");
     exit();
 }
+
+// 데이터베이스 연결
+$host = 'localhost';
+$db = 'il_database';
+$user = 'root';
+$pass = 'gsc1234!@#$';
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (PDOException $e) {
+    die("데이터베이스 연결 실패: " . $e->getMessage());
+}
+
+// 현재 페이지 번호 가져오기 (기본값: 1)
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = max($page, 1); // 최소 페이지는 1
+
+// 한 페이지에 표시할 데이터 개수
+$itemsPerPage = 5;
+
+// 데이터베이스에서 시작 위치 계산
+$offset = ($page - 1) * $itemsPerPage;
+
+// 전체 데이터 개수 가져오기
+$totalItemsQuery = $pdo->query("SELECT COUNT(*) AS count FROM NOTICES");
+$totalItems = $totalItemsQuery->fetch()['count'];
+
+// 전체 페이지 수 계산
+$totalPages = ceil($totalItems / $itemsPerPage);
+
+// 현재 페이지에 표시할 데이터 가져오기
+$sql = "SELECT * FROM NOTICES ORDER BY date DESC LIMIT :limit OFFSET :offset";
+$stmt = $pdo->prepare($sql);
+$stmt->bindValue(':limit', $itemsPerPage, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$notices = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -14,139 +58,15 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공지사항</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f8ff;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
-
-      .container {
-        background: white;
-        border-radius: 10px;
-        padding: 20px;
-        width: 360px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        position: relative;
-        text-align: center;
-      }
-
-      .header {
-        font-size: 20px;
-        font-weight: bold;
-        background-color: #007bff;
-        color: white;
-        border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 20px;
-        position: relative;
-      }
-
-      .write-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 12px;
-      }
-
-      .write-button:hover {
-        background-color: #218838;
-      }
-
-      .dropdown {
-        margin-bottom: 20px;
-      }
-
-      .dropdown select {
-        width: 100%;
-        padding: 10px;
-        font-size: 14px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        font-size: 14px;
-      }
-
-      table th,
-      table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-      }
-
-      table th {
-        background-color: #f4f4f4;
-        font-weight: bold;
-      }
-
-      .pagination {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-      }
-
-      .pagination a {
-        margin: 0 5px;
-        padding: 5px 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #007bff;
-      }
-
-      .pagination a:hover {
-        background-color: #007bff;
-        color: white;
-      }
-
-      .back-button {
-        background-color: #ffc107;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-
-      .back-button:hover {
-        background-color: #e0a800;
-      }
-    </style>
+    <link rel="stylesheet" href="../css/notice.css" />
   </head>
   <body>
     <div class="container">
-      <!-- 헤더 -->
       <div class="header">
         공지사항
-        <!-- 작성하기 버튼 -->
         <button class="write-button" onclick="location.href='write_notice.php'">
           작성하기
         </button>
-      </div>
-
-      <!-- 드롭다운 -->
-      <div class="dropdown">
-        <select id="grade-filter">
-          <option value="all">전체</option>
-          <option value="1">1학년</option>
-          <option value="2">2학년</option>
-          <option value="3">3학년</option>
-        </select>
       </div>
 
       <!-- 공지사항 테이블 -->
@@ -155,37 +75,37 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
           <tr>
             <th>번호</th>
             <th>제목</th>
+            <th>작성자</th>
             <th>작성일</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>학과 프로그램 사용법</td>
-            <td>2024.01.11</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>학과 프로그램 사용법</td>
-            <td>2024.01.11</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>학과 프로그램 사용법</td>
-            <td>2024.01.11</td>
-          </tr>
-          <!-- 데이터가 더 있다면 추가 -->
+          <?php foreach ($notices as $notice): ?>
+            <tr>
+              <td><?php echo htmlspecialchars($notice['id']); ?></td>
+              <td><?php echo htmlspecialchars($notice['title']); ?></td>
+              <td><?php echo htmlspecialchars($notice['author']); ?></td>
+              <td><?php echo htmlspecialchars($notice['date']); ?></td>
+            </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
 
       <!-- 페이지네이션 -->
       <div class="pagination">
-        <a href="#">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">6</a>
+        <?php if ($page > 1): ?>
+          <a href="?page=<?php echo $page - 1; ?>">이전</a>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+          <a href="?page=<?php echo $i; ?>" <?php if ($i === $page) echo 'class="active"'; ?>>
+            <?php echo $i; ?>
+          </a>
+        <?php endfor; ?>
+
+        <?php if ($page < $totalPages): ?>
+          <a href="?page=<?php echo $page + 1; ?>">다음</a>
+        <?php endif; ?>
       </div>
 
       <!-- 돌아가기 버튼 -->
@@ -195,4 +115,3 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     </div>
   </body>
 </html>
-
