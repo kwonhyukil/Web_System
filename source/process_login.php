@@ -23,24 +23,23 @@ try {
     die("데이터베이스 연결 실패: " . $e->getMessage());
 }
 
-// POST 요청인지 확인
+// POST 요청 확인
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $student_id = trim($_POST['student_id']); // 입력된 학번
-    $password = trim($_POST['password']); // 입력된 비밀번호
+    $student_id = trim($_POST['student_id']);
+    $password = trim($_POST['password']);
 
-    // 필수 입력 확인
+    // 필드 값 확인
     if (empty($student_id) || empty($password)) {
-        echo "모든 필드를 입력해주세요.";
+        echo "<script>alert('모든 필드를 입력해주세요.'); history.back();</script>";
         exit();
     }
 
-    // 학번으로 사용자 조회
+    // 사용자 인증
     $sql = "SELECT * FROM users WHERE student_id = :student_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':student_id' => $student_id]);
     $user = $stmt->fetch();
 
-    // 사용자가 존재하고 비밀번호가 일치하는지 확인
     if ($user && password_verify($password, $user['password'])) {
         // 세션에 사용자 정보 저장
         $_SESSION['loggedin'] = true;
@@ -51,12 +50,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: notice_schedule.php");
         exit();
     } else {
-        // 로그인 실패 메시지 출력
+        // 로그인 실패
         echo "<script>alert('학번 또는 비밀번호가 잘못되었습니다.'); history.back();</script>";
         exit();
     }
 } else {
-    echo "잘못된 요청입니다.";
+    echo "<script>alert('잘못된 요청입니다.'); history.back();</script>";
     exit();
 }
 ?>
