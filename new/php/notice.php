@@ -1,3 +1,57 @@
+<?php
+// 데이터베이스 연결 설정
+$host = 'localhost';
+$dbname = 'your_database_name';
+$user = 'your_username';
+$password = 'your_password';
+
+try {
+    // PDO를 이용한 데이터베이스 연결
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+
+// 학년 필터 설정 (GET 파라미터로 받음)
+$gradeFilter = isset($_GET['grade']) ? $_GET['grade'] : 'all';
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$itemsPerPage = 5; // 한 페이지에 표시할 항목 수
+$offset = ($page - 1) * $itemsPerPage;
+
+// 기본 SQL 쿼리
+$sql = "SELECT id, notice_name, title, date, target, author FROM your_table_name";
+if ($gradeFilter !== 'all') {
+    $sql .= " WHERE target = :grade";
+}
+$sql .= " ORDER BY date DESC LIMIT :offset, :itemsPerPage";
+
+$stmt = $pdo->prepare($sql);
+
+// 파라미터 바인딩
+if ($gradeFilter !== 'all') {
+    $stmt->bindParam(':grade', $gradeFilter, PDO::PARAM_INT);
+}
+$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+$stmt->bindParam(':itemsPerPage', $itemsPerPage, PDO::PARAM_INT);
+
+// 쿼리 실행
+$stmt->execute();
+$notices = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// 총 공지사항 개수 계산
+$countSql = "SELECT COUNT(*) FROM your_table_name";
+if ($gradeFilter !== 'all') {
+    $countSql .= " WHERE target = :grade";
+}
+$countStmt = $pdo->prepare($countSql);
+if ($gradeFilter !== 'all') {
+    $countStmt->bindParam(':grade', $gradeFilter, PDO::PARAM_INT);
+}
+$countStmt->execute();
+$totalItems = $countStmt->fetchColumn();
+$totalPages = ceil($totalItems / $itemsPerPage);
+?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -55,7 +109,7 @@
         </tbody>
     </table>
 
-    <!-- 페이지네이션 및 뒤로가기 버튼 -->
+    <!-- 페이지네이션 -->
     <div class="pagination-container">
         <div class="pagination">
             <?php if ($page > 1): ?>
@@ -63,8 +117,7 @@
             <?php endif; ?>
 
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $i; ?>"
-
+                <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $i; ?>" 
                    <?php if ($i === $page) echo 'style="font-weight: bold; text-decoration: underline;"'; ?>>
                     <?php echo $i; ?>
                 </a>
