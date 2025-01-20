@@ -102,7 +102,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
       <!-- 로고 -->
       <div class="logo">
-        <img src="image/yeungjin_logo.jfif" alt="Yeungjin University Logo" />
+        <img src="../image/yeungjin_logo.jfif" alt="Yeungjin University Logo" />
         <h2>영진전문대학교</h2>
       </div>
 
