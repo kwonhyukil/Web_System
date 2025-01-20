@@ -1,9 +1,10 @@
 <?php
 // 데이터베이스 연결 설정
-$host = 'localhost';
-$dbname = 'your_database_name';
-$user = 'your_username';
-$password = 'your_password';
+$host = 'localhost'; // 호스트 이름
+$db = 'il_database'; // 데이터베이스 이름
+$user = 'root'; // 사용자 이름
+$pass = 'gsc1234!@#$'; // 비밀번호
+$charset = 'utf8mb4'; // 문자 인코딩 설정
 
 try {
     // PDO를 이용한 데이터베이스 연결
