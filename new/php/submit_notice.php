@@ -25,20 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 입력값 가져오기
     $notice_name = trim($_POST['notice_name']);
     $title = trim($_POST['title']);
-    $date = trim($_POST['date']);
     $target = trim($_POST['target']);
     $author = trim($_POST['author']);
     $content = trim($_POST['content']);
 
     // 필수 입력값 확인
-    if (empty($notice_name) || empty($title) || empty($date) || empty($target) || empty($author) || empty($content)) {
+    if (empty($notice_name) || empty($title) || empty($target) || empty($author) || empty($content)) {
         echo "<script>alert('모든 필드를 입력해주세요.'); history.back();</script>";
         exit();
     }
 
-    // 데이터 삽입 쿼리
+    // 데이터 삽입 쿼리 (작성 날짜는 자동으로 NOW() 사용)
     $sql = "INSERT INTO NOTICES (notice_name, title, date, target, author, content) 
-            VALUES (:notice_name, :title, :date, :target, :author, :content)";
+            VALUES (:notice_name, :title, NOW(), :target, :author, :content)";
 
     $stmt = $pdo->prepare($sql);
 
@@ -47,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([
             ':notice_name' => $notice_name,
             ':title' => $title,
-            ':date' => $date,
             ':target' => $target,
             ':author' => $author,
             ':content' => $content
