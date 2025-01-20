@@ -1,70 +1,3 @@
-<?php
-session_start();
-
-// 로그인 상태 확인
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: ../index.html");
-    exit();
-}
-
-// 데이터베이스 연결 설정
-$host = 'localhost';
-$db = 'il_database';
-$user = 'root';
-$pass = 'gsc1234!@#$';
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-];
-
-try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (PDOException $e) {
-    die("데이터베이스 연결 실패: " . $e->getMessage());
-}
-
-// 페이지네이션 설정
-$itemsPerPage = 5; // 페이지당 항목 수
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$page = max($page, 1); // 최소 페이지는 1
-$offset = ($page - 1) * $itemsPerPage;
-
-// 학년 필터 처리
-$gradeFilter = isset($_GET['grade']) ? $_GET['grade'] : 'all';
-
-// 데이터 조회 쿼리 설정
-if ($gradeFilter === 'all') {
-    $sqlCount = "SELECT COUNT(*) FROM NOTICES";
-    $sql = "SELECT * FROM NOTICES ORDER BY date DESC LIMIT :offset, :itemsPerPage";
-} else {
-    $sqlCount = "SELECT COUNT(*) FROM NOTICES WHERE target = :grade";
-    $sql = "SELECT * FROM NOTICES WHERE target = :grade ORDER BY date DESC LIMIT :offset, :itemsPerPage";
-}
-
-// 총 공지사항 수 계산
-$stmt = $pdo->prepare($sqlCount);
-if ($gradeFilter !== 'all') {
-    $stmt->bindValue(':grade', $gradeFilter, PDO::PARAM_STR);
-}
-$stmt->execute();
-$totalItems = $stmt->fetchColumn();
-
-// 공지사항 데이터 가져오기
-$stmt = $pdo->prepare($sql);
-if ($gradeFilter !== 'all') {
-    $stmt->bindValue(':grade', $gradeFilter, PDO::PARAM_STR);
-}
-$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-$stmt->bindValue(':itemsPerPage', $itemsPerPage, PDO::PARAM_INT);
-$stmt->execute();
-$notices = $stmt->fetchAll();
-
-// 총 페이지 수 계산
-$totalPages = ceil($totalItems / $itemsPerPage);
-?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -101,7 +34,6 @@ $totalPages = ceil($totalItems / $itemsPerPage);
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
-            <th>뒤로가기</th>
         </tr>
         </thead>
         <tbody>
@@ -111,31 +43,38 @@ $totalPages = ceil($totalItems / $itemsPerPage);
             <tr>
                 <td><?php echo $itemNumber++; ?></td>
                 <td><?php echo htmlspecialchars($notice['target']); ?></td>
-                <td><?php echo htmlspecialchars($notice['title']); ?></td>
+                <td>
+                    <a href="view_notice.php?id=<?php echo $notice['id']; ?>" class="notice-title-link">
+                        <?php echo htmlspecialchars($notice['title']); ?>
+                    </a>
+                </td>
                 <td><?php echo htmlspecialchars($notice['author']); ?></td>
                 <td><?php echo htmlspecialchars($notice['date']); ?></td>
-                <td><button class="back-button" onclick="location.href='notice_schedule.php'">뒤로가기</button></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
 
-    <!-- 페이지네이션 -->
-    <div class="pagination">
-        <?php if ($page > 1): ?>
-            <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $page - 1; ?>">이전</a>
-        <?php endif; ?>
+    <!-- 페이지네이션 및 뒤로가기 버튼 -->
+    <div class="pagination-container">
+        <div class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $page - 1; ?>">이전</a>
+            <?php endif; ?>
 
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-            <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $i; ?>"
-                <?php if ($i === $page) echo 'style="font-weight: bold; text-decoration: underline;"'; ?>>
-                <?php echo $i; ?>
-            </a>
-        <?php endfor; ?>
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $i; ?>"
 
-        <?php if ($page < $totalPages): ?>
-            <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $page + 1; ?>">다음</a>
-        <?php endif; ?>
+                   <?php if ($i === $page) echo 'style="font-weight: bold; text-decoration: underline;"'; ?>>
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+
+            <?php if ($page < $totalPages): ?>
+                <a href="?grade=<?php echo $gradeFilter; ?>&page=<?php echo $page + 1; ?>">다음</a>
+            <?php endif; ?>
+        </div>
+        <button class="back-button" onclick="location.href='../html/notice_schedule.html'">뒤로가기</button>
     </div>
 </div>
 </body>
