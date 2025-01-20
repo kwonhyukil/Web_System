@@ -8,7 +8,8 @@ $charset = 'utf8mb4'; // 문자 인코딩 설정
 
 try {
     // PDO를 이용한 데이터베이스 연결
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=$charset", $user, $pass);
+
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
