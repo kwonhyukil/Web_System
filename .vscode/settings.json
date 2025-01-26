@@ -1,0 +1,3 @@
+{
+  "dataworkspace.excludedProjects": ["il_db/il_db.sqlproj"]
+}
