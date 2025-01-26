@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sign_up</title>
+  </head>
+  <body>
+    <h2>회원가입</h2>
+    <form action="../actions/sign_up.php" method="post">
+      <label for="id">아이디: </label>
+      <input type="text" id="id" name="id" placeholder="아이디를 입력하세요" />
+      <br /><br />
+      <label for="password">비밀번호: </label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="비밀번호를 입력하세요"
+      />
+      <br /><br />
+      <label for="password check">비밀번호 확인: </label>
+      <input
+        type="password"
+        id="password2"
+        name="password2"
+        placeholder="비밀번호를 다시 입력하세요"
+      />
+      <br /><br />
+      <label for="name">이름: </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="이름을 입력하세요"
+      />
+      <br /><br />
+      <label for="email">이메일: </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="이메일을 입력하세요"
+      />
+      <br /><br />
+      <button type="submit">회원가입</button>
+      <button type="button" onclick="location.href = 'index.html'">
+        뒤로가기
+      </button>
+    </form>
+  </body>
+</html>
