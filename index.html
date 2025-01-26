@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인</title>
+    <!-- CSS 파일 연결 -->
+    <link rel="stylesheet" href="css/index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- 로고 -->
+      <div class="logo">
+        <img src="image/yeungjin_logo.jfif" alt="Yeungjin University Logo" />
+        <h2>영진전문대학교</h2>
+      </div>
+
+      <!-- 로그인 폼 -->
+      <form action="source/process_login.php" method="POST">
+        <!-- 학번 입력 필드 -->
+        <div class="input-group">
+          <label for="student_id">학번</label>
+          <input
+            type="text"
+            id="student_id"
+            name="student_id"
+            placeholder="학번"
+            required
+          />
+        </div>
+
+        <!-- 비밀번호 입력 필드 -->
+        <div class="input-group">
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="비밀번호"
+            required
+          />
+        </div>
+
+        <!-- 로그인 버튼 -->
+        <button type="submit" class="button login-button">로그인</button>
+
+        <!-- 회원가입 버튼 -->
+        <button
+          type="button"
+          class="button signup-button"
+          onclick="location.href='sign_up.html'"
+        >
+          회원가입
+        </button>
+      </form>
+
+      <!-- 로그인 상태 유지 및 비밀번호 찾기 -->
+      <div class="extra-options">
+        <label><input type="checkbox" /> 로그인 상태 유지</label>
+        <a href="#">비밀번호 찾기</a>
+      </div>
+    </div>
+  </body>
+</html>
