@@ -26,7 +26,7 @@ if ($password !== $password2) {
     die('비밀번호가 일치하지 않습니다.');
 }
 
-$sql = insert into users (username, password, password2, name, email) values (?,?,?,?,?);
+$sql = insert into users ($username, $password, $password2, $name, $email) values (?,?,?,?,?);
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('sssss', $username, $password, $password2, $name, $email);
 
@@ -36,3 +36,7 @@ if ($stmt->execute()) {
 } else {
     echo '회원가입 실패' . $stmt->error;
 }
+
+$stmt->close();
+$conn->close();
+>?
