@@ -7,8 +7,6 @@ $database = 'study_db';
 
 $conn = new mysqli($host, $username, $password, $database);
 
-$
-
 if ($conn->connect_error) {
     die('데이터베이스 연결 실패: ' . $conn->connect_error);
 }
@@ -33,7 +31,36 @@ if ($result->num_rows === 0) {
     die('공지사항을 찾을 수 없습니다.');
 }
 
+// 공지사항 데이터를 가져와 $row에 저장
 $row = $result->fetch_assoc();
+
+// POST 요청으로 수정 데이터가 전달된 경우
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'] ?? '';
+    $content = $_POST['content'] ?? '';
+    $author = $_POST['author'] ?? '';
+
+    // 데이터 검증
+    if (empty($title) || empty($content) || empty($author)) {
+        die('모든 필드를 입력해주세요.');
+    }
+
+    // 공지사항 수정
+    $sql = "UPDATE notice_board SET title = ?, content = ?, author = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('sssi', $title, $content, $author, $id);
+    
+    if ($stmt->execute()) {
+        // 수정 완료 후 공지사항 페이지로 리디렉션
+        header('Location: notice.php');
+        exit();
+    } else {
+        echo "공지사항 수정 중 오류가 발생했습니다: " . $stmt->error;
+    }
+}
+
+$stmt->close();
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +71,7 @@ $row = $result->fetch_assoc();
 </head>
 <body>
     <h1>공지사항 수정</h1>
-    <form action="update.php" method="post">
+    <form action="" method="post">
         <!-- 공지사항 ID (숨김 필드) -->
         <input type="hidden" name="id" value="<?= htmlspecialchars($id) ?>">
         
@@ -62,7 +89,3 @@ $row = $result->fetch_assoc();
     </form>
 </body>
 </html>
-<?php
-$stmt->close();
-$conn->close();
-?>

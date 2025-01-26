@@ -37,12 +37,16 @@ $result = $conn->query($sql);
         th {
             background-color: #f4f4f4;
         }
+        .delete-button {
+            color: red;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>공지사항</h1>
     <button onclick="location.href = '../public/notice_writing.html'">공지사항 작성</button>
-    <button onclick="location.href = '../public/notic.php'">뒤로가기</button>
+    <button onclick="location.href = '../public/main_menu.html'">뒤로가기</button>
     <br><br>
     <table>
         <thead>
@@ -51,6 +55,7 @@ $result = $conn->query($sql);
                 <th>제목</th>
                 <th>작성자</th>
                 <th>작성일</th>
+                <th>삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -63,10 +68,11 @@ $result = $conn->query($sql);
                     echo "<td><a href='read.php?id=" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['title']) . "</a></td>";
                     echo "<td>" . htmlspecialchars($row['author']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['create_at']) . "</td>";
+                    echo "<td><a class='delete-button' href='delete.php?id=" . htmlspecialchars($row['id']) . "' onclick='return confirm(\"정말 삭제하시겠습니까?\");'>삭제</a></td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='4'>공지사항이 없습니다.</td></tr>";
+                echo "<tr><td colspan='5'>공지사항이 없습니다.</td></tr>";
             }
             ?>
         </tbody>
