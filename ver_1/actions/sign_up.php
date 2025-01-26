@@ -32,7 +32,6 @@ $stmt->bind_param('sssss', $username, $password, $password2, $name, $email);
 
 if ($stmt->execute()) {
     echo '회원가입 성공';
-    header('Location: welcome.html');
 } else {
     echo '회원가입 실패' . $stmt->error;
 }
