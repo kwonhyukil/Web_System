@@ -44,7 +44,7 @@ $row = $result->fetch_assoc();
     <p><strong>작성자:</strong> <?= htmlspecialchars($row['author']) ?></p>
     <p><strong>작성일:</strong> <?= htmlspecialchars($row['create_at']) ?></p>
     <hr>
-    <p><?= nl2br(htmlspecialchars($row['content'])) ?></p>
+    <p><?= n12br(htmlspecialchars($row['content'])) ?></p>
     <button onclick="location.href='notice.php'">목록으로 돌아가기</button>
     <button onclick="location.href='update.php?id=<?= $id ?>'">수정</button>
 </body>

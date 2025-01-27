@@ -33,6 +33,9 @@ if ($result->num_rows === 0) {
 
 // 공지사항 데이터를 가져와 $row에 저장
 $row = $result->fetch_assoc();
+키 -값
+키 - 값
+키 갮갮
 
 // POST 요청으로 수정 데이터가 전달된 경우
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
