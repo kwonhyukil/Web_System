@@ -68,7 +68,7 @@ if (empty($error_message)){
 if (empty($error_message)){
 
     // 비밀번호를 안전하게 암호화
-    // $password = password_hash($password, PASSWORD_DEFAULT);
+    $password = password_hash($password, PASS);
     
     // 사용자 정보를 데이터베이스에 삽입하는 SQL 쿼리
     $sql = "INSERT INTO users (name, student_id, grade, password, email, phone, gender, role) VALUE (?, ?, ?, ?, ?, ?, ?, ?)";
