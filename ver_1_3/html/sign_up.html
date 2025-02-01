@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+</head>
+<body>
+    <h1>회원 가입</h1>
+    <form action="../php/" method="post">
+
+        <label for="name">이름: </label>
+        <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required>
+        <br><br>
+        <label>학번: </label>
+        <input type="text" id="id" name="id" placeholder="학번을 입력하세요" required>
+        <label for="grade">학년</label>
+        <select id="grade" name="grade" required>
+            <option>선택</option>
+            <option value="1_grade">1학년</option>
+            <option value="2_grade">2학년</option>
+            <option value="3_grade">3학년</option>
+        </select>
+        <br><br>
+        <label for="password">비밀번호: </label>
+        <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+        <br><br>
+        <label for="email">이메일: </label>
+        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required>
+        <br><br>
+        <label for="phone">전화번호: </label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10,11}" placeholder="010-xxxx-xxxx" required></input>
+        <br><br>
+        <label for="gender">성별: </label>
+        <label><input type="radio" name="gender" value="male" checked>남성</label>
+        <label><input type="radio" name="gender" value="female">여성</label>
+        <br><br>
+        <button type="submit">회원가입</button>
+        <button type="button" onclick="location.href='login.html'">뒤로가기</button>
+    </form>
+    
+</body>
+</html>
