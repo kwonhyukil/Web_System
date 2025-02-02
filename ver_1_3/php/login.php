@@ -1,23 +1,26 @@
 <?php
 
-// POST 데이터 확인
-var_dump($_POST);
-
 session_start();
 
-// 데이터베이스 연결 정보
-$host= "localhost";
-$username = "root";
-$password = "";
-$database = "user_registration";
+// // 데이터베이스 연결 정보
+// $host= "localhost";
+// $username = "root";
+// $password = "";
+// $database = "user_registration";
+
+// // 데이터베이스 연결
+// $conn = new mysqli($host,$username,$password,$database);
+
+// // 데이터베이스 연결 확인
+// if ($conn->connect_error){
+//     die("데이터베이스 연결 실패" . $conn->connect_error);
+// }
+
+require_once 'db_connect.php';
 
 // 데이터베이스 연결
-$conn = new mysqli($host,$username,$password,$database);
+$conn = connectDatabase();
 
-// 데이터베이스 연결 확인
-if ($conn->connect_error){
-    die("데이터베이스 연결 실패" . $conn->connect_error);
-}
 
 // 사용자 입력값 가져오기
 $input_student_id = $_POST['student_id'];     // 사용자 입력 학번
