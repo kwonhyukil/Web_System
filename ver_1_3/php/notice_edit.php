@@ -66,9 +66,9 @@ $conn->close();
         <!-- 대상 학년 선택 필드 (기존 값에 따라 선택 표시) -->
         <label for="target_grade">대상 학년:</label>
         <select id="target_grade" name="target_grade" required>
-            <option value="1_grade" <?= $notice['target_grade'] === '1_grade' ? 'selected' : '' ?>>1학년</option>
-            <option value="2_grade" <?= $notice['target_grade'] === '2_grade' ? 'selected' : '' ?>>2학년</option>
-            <option value="3_grade" <?= $notice['target_grade'] === '3_grade' ? 'selected' : '' ?>>3학년</option>
+            <option value="1학년" <?= $notice['target_grade'] === '1학년' ? 'selected' : '' ?>>1학년</option>
+            <option value="2학년" <?= $notice['target_grade'] === '2학년' ? 'selected' : '' ?>>2학년</option>
+            <option value="3학년" <?= $notice['target_grade'] === '3학년' ? 'selected' : '' ?>>3학년</option>
         </select>
         <br><br>
 
