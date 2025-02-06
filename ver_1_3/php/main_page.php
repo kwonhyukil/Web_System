@@ -14,6 +14,7 @@ echo "하이, ", ($_SESSION['name']) . "님 ㅎ";
     <title>메인 화면</title>
 </head>
 <body>
+
     <h2>메인 화면<h2>
 
     <button type="button" onclick="location.href='notice.php'">공지사항</button>

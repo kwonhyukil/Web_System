@@ -48,7 +48,6 @@ if ($result->num_rows === 1){
         $_SESSION['name'] = $user['name'];
         $_SESSION['role'] = $user['role'];
 
-        echo "로그인 성공! 환영합니두." . $user['name']. "님~";
         header("Location: ../html/main_page.html");
         exit;
     } else {
